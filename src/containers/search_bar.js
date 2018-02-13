@@ -1,8 +1,11 @@
 //search_bar component is a container since it changes the app state with every search
 //hence it needs to interact with redux
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchWeather } from '../actions/index';
 
-export default class SearchBar extends Component {
+class SearchBar extends Component {
 
   //Initialize search term as empty within the constructor
   constructor(props) {
@@ -11,9 +14,10 @@ export default class SearchBar extends Component {
     this.state = {term: ''};
 
     //Binding the onInputChange function context to this component, so when
-    //it's called fron the input onChange attriburte, its content is the same as 
+    //it's called from the input onChange attribute, its content is the same as 
     //THIS component
     this.onInputChange = this.onInputChange.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   //Every event comes with the event object since vanilla JS
@@ -34,6 +38,8 @@ export default class SearchBar extends Component {
     event.preventDefault();
 
     // Fetch weather data
+    this.props.fetchWeather(this.state.term);
+    this.setState({ term: '' });
   }
 
   render() {
@@ -53,3 +59,9 @@ export default class SearchBar extends Component {
     );
   }
 }
+
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchWeather }, dispatch);
+}
+//By passing null we tell redux that we don't care about the state here
+export default connect(null, matchDispatchToProps)(SearchBar);

@@ -23,7 +23,7 @@ class SearchBar extends Component {
   //Every event comes with the event object since vanilla JS
   //event.target.value always has the value written in the input when it changes.
   onInputChange(event) {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     //Change the component state so the input can show the value as the user types
     this.setState({ term: event.target.value });
   }
@@ -61,7 +61,8 @@ class SearchBar extends Component {
 }
 
 function matchDispatchToProps(dispatch) {
+  //Passed the result to all of the reducers
   return bindActionCreators({ fetchWeather }, dispatch);
 }
-//By passing null we tell redux that we don't care about the state here
+//By passing null instead of mapStateToProps we tell redux that we don't care about the state for this component
 export default connect(null, matchDispatchToProps)(SearchBar);
